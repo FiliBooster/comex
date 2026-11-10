@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Comex
+namespace Comex.Scripts
 {
     internal class ScriptsComex
     {
@@ -107,7 +107,7 @@ namespace Comex
             Console.WriteLine("\nDigite a descrição do produto:");
             string descricaoDoProduto = Console.ReadLine();
 
-            Comex.Produto novoProduto = new Produto { Nome = nomeDoProduto, Descricao = descricaoDoProduto, Unitario = precoDoProduto };
+            Produto novoProduto = new Produto { Nome = nomeDoProduto, Descricao = descricaoDoProduto, Unitario = precoDoProduto };
 
             CadastroDeProdutos[nomeDoProduto] = novoProduto;
 

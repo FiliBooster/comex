@@ -1,4 +1,5 @@
 ﻿using Comex;
+using Comex.Scripts;
 using System.Runtime.CompilerServices;
 
 class Teste()
