@@ -26,19 +26,21 @@ namespace Comex
             [7] = ("Exibir carrinho", ExibirCarrinho),
             [-1] = ("Finalizar COMEX", FinalizarComex),
         };
-
+        private static bool _executando = true;
         private static Dictionary<int, string>? _cadastroDeClientes;
         private static Dictionary<int, string> CadastroDeClientes => _cadastroDeClientes ??= new();
-        private static Dictionary<string, double>? _cadastroDeProdutos;
-        private static Dictionary<string, double> CadastroDeProdutos => _cadastroDeProdutos ??= new();
-        private static Dictionary<int, Dictionary<string, int>>? _carrinhosEmAberto;
-        private static Dictionary<int, Dictionary<string, int>> CarrinhosEmAberto => _carrinhosEmAberto ??= new();
+        private static Dictionary<string, Produto>? _cadastroDeProdutos;
+        private static Dictionary<string, Produto> CadastroDeProdutos => _cadastroDeProdutos ??= new();
+        private static Dictionary<int, Dictionary<string, Produto>>? _carrinhosEmAberto;
+        private static Dictionary<int, Dictionary<string,Produto>> CarrinhosEmAberto => _carrinhosEmAberto ??= new();
 
         public static void Executar()
         {
-            ExibirMenuDeOpcoes();
-            int opcaoEscolhida = ObterOpcaoEscolhida();
-            RotearOpcaoEscolhida(opcaoEscolhida);
+            while (_executando){
+                ExibirMenuDeOpcoes();
+                int opcaoEscolhida = ObterOpcaoEscolhida();
+                RotearOpcaoEscolhida(opcaoEscolhida);
+            }
         }
 
         static void ExibirMenuDeOpcoes()
@@ -100,9 +102,14 @@ namespace Comex
             string nomeDoProduto = Console.ReadLine();
 
             Console.WriteLine("\nDigite o preço (em R$) do produto:");
-            double precoDoProduto = double.Parse(Console.ReadLine(), System.Globalization.NumberStyles.AllowDecimalPoint);
+            float precoDoProduto = float.Parse(Console.ReadLine(), System.Globalization.NumberStyles.AllowDecimalPoint);
+            
+            Console.WriteLine("\nDigite a descrição do produto:");
+            string descricaoDoProduto = Console.ReadLine();
 
-            CadastroDeProdutos[nomeDoProduto] = precoDoProduto;
+            Comex.Produto novoProduto = new Produto { Nome = nomeDoProduto, Descricao = descricaoDoProduto, Unitario = precoDoProduto };
+
+            CadastroDeProdutos[nomeDoProduto] = novoProduto;
 
             TimeStampWriteLine($"Produto {nomeDoProduto} cadastrado com sucesso.");
             Executar();
@@ -113,33 +120,50 @@ namespace Comex
         {
             TimeStampWriteLine($"\nLista de produtos cadastrados agora:");
             int indice = 0;
-            foreach (var produto in CadastroDeProdutos)
+            foreach (Produto produto in CadastroDeProdutos.Values)
             {
-                Console.WriteLine($"{indice}: Nome: {produto.Key} | Preço (R$): {produto.Value}");
+                Console.WriteLine($"{indice}: Nome: {produto.Nome} | Preço (R$): {produto.Unitario}");
                 indice++;
             }
 
             Executar();
         }
 
+        public static Produto PesquisarPorProdutoNoCadastro(string nomeDoProduto) {
+            
+                return CadastroDeProdutos[nomeDoProduto];
+        }
         static void AjustarPrecoDeProduto()
         {
             Console.WriteLine("\nQual o nome do produto cujo preço deseja ajustar?");
             string nomeDoProduto = Console.ReadLine();
-
-            if (CadastroDeProdutos.TryGetValue(nomeDoProduto, out var precoAtual) == false)
+            try
             {
-                Console.WriteLine("Produto não cadastrado no sistema.");
-            }
-            else
-            {
+                Produto produto = PesquisarPorProdutoNoCadastro(nomeDoProduto);
+                float precoAntigo = produto.Unitario;
                 Console.WriteLine("\nDigite o novo preço (em R$) para o produto:");
-                double novoPreco = double.Parse(Console.ReadLine(), System.Globalization.NumberStyles.AllowDecimalPoint);
-                CadastroDeProdutos[nomeDoProduto] = novoPreco;
+                float novoPreco = float.Parse(Console.ReadLine(), System.Globalization.NumberStyles.AllowDecimalPoint);
+                CadastroDeProdutos[nomeDoProduto].Unitario = novoPreco;
                 TimeStampWriteLine("Preço ajustado!");
-                Console.WriteLine($"[{nomeDoProduto}]:\n preço antigo: {precoAtual} | preço novo: {novoPreco}");
+                Console.WriteLine($"[{nomeDoProduto}]:\n preço antigo: {precoAntigo} | preço novo: {novoPreco}");
+            }
+            catch (KeyNotFoundException)
+            {
+                Console.WriteLine($"Nenhum produto encontrado com nome [{nomeDoProduto}] no Cadastro de Produtos.");
             }
             Executar();
+        }
+
+        static Produto CriarItemDeCarrinho(string nomeProduto, int quantidade)
+        {
+            Produto p = CadastroDeProdutos[nomeProduto];
+            return new Produto
+            {
+                Nome = p.Nome,
+                Descricao = p.Descricao,
+                Unitario = p.Unitario,
+                Quantidade = quantidade
+            };
         }
 
         static void AdicionarProdutosAoCarrinho()
@@ -147,7 +171,7 @@ namespace Comex
             (int cpfDoCliente, bool clienteJaTemCadastro) = VerificarSeClienteJaTemCadastro();
             if (clienteJaTemCadastro == false){ return; }
 
-            Dictionary<int, Dictionary<string, int>> carrinho = ObterCarrinho(cpfDoCliente);
+            Dictionary<int, Dictionary<string, Produto>> carrinho = ObterCarrinho(cpfDoCliente);
 
             bool adicaoConcluida = false;
             bool produtoTemCadastro = false;
@@ -165,7 +189,7 @@ namespace Comex
                 quantidadeDesejadaDoProdutoDesejado = int.Parse(Console.ReadLine());
                 if (quantidadeDesejadaDoProdutoDesejado == 0) { continue; } //se quantidade é zero, não adiciona produto
 
-                AdicionarProdutoAoCarrinho(produto: nomeDoProdutoDesejado, quantidade: quantidadeDesejadaDoProdutoDesejado, carrinho: carrinho);
+                AdicionarProdutoAoCarrinho(nomeDoProduto: nomeDoProdutoDesejado, quantidade: quantidadeDesejadaDoProdutoDesejado, carrinho: carrinho);
                 TimeStampWriteLine($"{quantidadeDesejadaDoProdutoDesejado} x {nomeDoProdutoDesejado} foram para o carrinho.");
 
                 nomeDoProdutoDesejado = "";
@@ -175,14 +199,17 @@ namespace Comex
 
         }
 
-        static void AdicionarProdutoAoCarrinho(string produto, int quantidade, Dictionary<int, Dictionary<string, int>> carrinho)
+        static void AdicionarProdutoAoCarrinho(string nomeDoProduto, int quantidade, Dictionary<int, Dictionary<string,Produto>> carrinho)
         {
-            string nomeDoProdutoDesejado = produto;
+            string nomeDoProdutoDesejado = nomeDoProduto;
             int quantidadeDesejadaDoProdutoDesejado = quantidade;
-            carrinho.First().Value[nomeDoProdutoDesejado] = quantidadeDesejadaDoProdutoDesejado;
-
-
-
+            if (carrinho.First().Value.TryGetValue(nomeDoProdutoDesejado, out Produto produto))
+            {
+                produto.Quantidade = quantidadeDesejadaDoProdutoDesejado;
+                return;
+            }
+            Produto novoProduto = CriarItemDeCarrinho(nomeDoProdutoDesejado, quantidade);
+            carrinho.First().Value[nomeDoProdutoDesejado]=novoProduto;
         }
 
         static (int Cpf, bool TemCadastro) VerificarSeClienteJaTemCadastro()
@@ -208,9 +235,9 @@ namespace Comex
                 else TemCadastro = true;
             return (TemCadastro, nomeDoProdutoDesejado);
         }
-        static Dictionary<int, Dictionary<string, int>> ObterCarrinho(int cpfDoClienteCadastrado)
+        static Dictionary<int, Dictionary<string,Produto>> ObterCarrinho(int cpfDoClienteCadastrado)
         {
-            Dictionary<int, Dictionary<string, int>> carrinho = new();
+            Dictionary<int, Dictionary<string, Produto>> carrinho = new();
             if (CarrinhosEmAberto.TryGetValue(key: cpfDoClienteCadastrado, out var itensDeCarrinho)) {
                 carrinho[cpfDoClienteCadastrado] = itensDeCarrinho;
             }
@@ -220,14 +247,14 @@ namespace Comex
             }
             return carrinho;
         }
-        static Dictionary<int, Dictionary<string, int>> CriarCarrinho(int cpfDoClienteCadastrado)
+        static Dictionary<int, Dictionary<string, Produto>> CriarCarrinho(int cpfDoClienteCadastrado)
         {
-            Dictionary<int, Dictionary<string, int>> carrinho = new() { [cpfDoClienteCadastrado] = new() { [""] = 0 } };
+            Dictionary<int, Dictionary<string, Produto>> carrinho = new() { [cpfDoClienteCadastrado] = new()};
             RegistrarCarrinho(carrinho);
             return carrinho;
 
         }
-        static bool RegistrarCarrinho(Dictionary<int, Dictionary<string, int>> carrinho)
+        static bool RegistrarCarrinho(Dictionary<int, Dictionary<string, Produto>> carrinho)
         {
             int cpf = carrinho.Keys.First();
             CarrinhosEmAberto[cpf] = carrinho[cpf];
@@ -238,15 +265,17 @@ namespace Comex
         {
             Console.WriteLine("\nDigite o nº do CPF do cliente cujo carrinho deseja exibir:");
             int cpfDoCliente = int.Parse(Console.ReadLine());
-            foreach (var par in CarrinhosEmAberto[cpfDoCliente])
+            foreach (Produto produto in CarrinhosEmAberto[cpfDoCliente].Values)
             {
-                Console.WriteLine($"Produto: {par.Key} | Quantidade: {par.Value}");
+                float subtotal = produto.Quantidade * produto.Unitario;
+                Console.WriteLine($"Produto: {produto.Nome} | Quantidade: {produto.Quantidade} | Preço Unitário (R$): {produto.Unitario} | Sub-total (R$): {subtotal} ");
             }
             Executar();
         }
 
         static void FinalizarComex()
         {
+            _executando = false;
             Console.WriteLine("COMEX FINALIZADO");
         }
 

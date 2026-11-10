@@ -12,7 +12,7 @@ namespace Comex
     {
         public required string Nome { get; set; }
         public required string Descricao { get; set; }
-        public float Unitario { get; set; }
+        public required float Unitario { get; set; }
         public int Quantidade { get; set; }
 
     }
