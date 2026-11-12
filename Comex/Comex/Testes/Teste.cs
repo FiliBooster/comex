@@ -1,6 +1,7 @@
 ﻿using Comex;
+using Comex.Core;
+using Comex.Menus;
 using Comex.Scripts;
-using System.Runtime.CompilerServices;
 
 class Teste()
 {
@@ -9,14 +10,18 @@ class Teste()
     string nomeDeLivro = "Livro Bíblia King James";
     string descricaoDeLivro = "Reverenciada obra antiga de sabedoria oriental.";
     float precoUnitarioDeLivro = 120.00f;
-    Comex.Produto produto = new Produto { Nome = nomeDeLivro, Descricao = descricaoDeLivro , Unitario = precoUnitarioDeLivro};
+    Comex.Produto produto = new Produto(nomeDeLivro, descricaoDeLivro, precoUnitarioDeLivro);
 
     Console.WriteLine(produto.Nome);
     Console.WriteLine(produto.Descricao);
     Console.WriteLine(produto.Unitario);
 
     Console.ReadKey();
-    ScriptsComex.Executar();
+
+    ComexState state = new();
+    ScriptsComex scripts = new(state);
+    PrincipalMenu principalMenu = new(state, scripts);
+    principalMenu.Executar();
     }
 
 }

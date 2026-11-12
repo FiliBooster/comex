@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,5 +16,12 @@ namespace Comex
         public required float Unitario { get; set; }
         public int Quantidade { get; set; }
 
+        [SetsRequiredMembers]
+        public Produto(string Nome, string Descricao, float Unitario)
+        {
+            this.Nome = Nome;
+            this.Descricao = Descricao;
+            this.Unitario = Unitario;
+        }
     }
 }
