@@ -7,4 +7,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Comex.GeradorRelatorio\Comex.GeradorRelatorio.csproj" />
+  </ItemGroup>
+
 </Project>

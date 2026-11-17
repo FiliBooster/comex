@@ -16,7 +16,7 @@ namespace Comex.Menus
             string nomeDoProduto = Console.ReadLine();
 
             Console.WriteLine("\nDigite o preço (em R$) do produto:");
-            if (!float.TryParse(Console.ReadLine(), System.Globalization.NumberStyles.AllowDecimalPoint, System.Globalization.CultureInfo.CurrentCulture, out float precoDoProduto))
+            if (!decimal.TryParse(Console.ReadLine(), System.Globalization.NumberStyles.AllowDecimalPoint, System.Globalization.CultureInfo.CurrentCulture, out decimal precoDoProduto))
             {
                 Console.WriteLine("Preço inválido.");
                 return;

@@ -20,7 +20,7 @@ namespace Comex.Menus
             }
             foreach (Produto produto in State.CarrinhosEmAberto[cpfDoCliente].Values)
             {
-                float subtotal = produto.Quantidade * produto.Unitario;
+                decimal subtotal = produto.Quantidade * produto.Unitario;
                 Console.WriteLine($"Produto: {produto.Nome} | Quantidade: {produto.Quantidade} | Preço Unitário (R$): {produto.Unitario} | Sub-total (R$): {subtotal} ");
             }
         }

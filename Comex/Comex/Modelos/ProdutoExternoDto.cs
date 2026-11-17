@@ -26,7 +26,7 @@ namespace Comex.Modelos
             return new Produto(
                 Nome: Title,
                 Descricao: Description,
-                Unitario: (float)Price);
+                Unitario: (decimal)Price);
         }
     }
     public class RatingDto

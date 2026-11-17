@@ -1,27 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+﻿using System.Diagnostics.CodeAnalysis;
+
 
 namespace Comex
 {
-    internal class Produto
+    [method: SetsRequiredMembers]
+    internal class Produto(string Nome, string Descricao, decimal Unitario)
     {
-        public required string Nome { get; set; }
-        public required string Descricao { get; set; }
-        public required float Unitario { get; set; }
+        public required string Nome { get; set; } = Nome;
+        public required string Descricao { get; set; } = Descricao;
+        public required decimal Unitario { get; set; } = Unitario;
         public int Quantidade { get; set; }
-
-        [SetsRequiredMembers]
-        public Produto(string Nome, string Descricao, float Unitario)
-        {
-            this.Nome = Nome;
-            this.Descricao = Descricao;
-            this.Unitario = Unitario;
-        }
     }
 }

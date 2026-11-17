@@ -13,7 +13,7 @@ namespace Comex.Modelos
         public int Potencia { get; set; }
 
         [SetsRequiredMembers]
-        public Eletronico(string nome, string descricao, float precoUnitario, int voltagem, int potencia) : base(Nome: nome, Descricao: descricao, Unitario: precoUnitario)
+        public Eletronico(string nome, string descricao, decimal precoUnitario, int voltagem, int potencia) : base(Nome: nome, Descricao: descricao, Unitario: precoUnitario)
         {
             Voltagem = voltagem;
             Potencia = potencia;

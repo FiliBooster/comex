@@ -9,7 +9,7 @@ class Teste()
     {
     string nomeDeLivro = "Livro Bíblia King James";
     string descricaoDeLivro = "Reverenciada obra antiga de sabedoria oriental.";
-    float precoUnitarioDeLivro = 120.00f;
+    decimal precoUnitarioDeLivro = 120.00m;
     Comex.Produto produto = new Produto(nomeDeLivro, descricaoDeLivro, precoUnitarioDeLivro);
 
     Console.WriteLine(produto.Nome);

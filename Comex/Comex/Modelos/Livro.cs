@@ -14,7 +14,7 @@ namespace Comex.Modelos
         public int TotalDePaginas { get; set; }
 
         [SetsRequiredMembers]
-        public Livro(string nome, string descricao, float precoUnitario, string isbn, int totalDePaginas): base(Nome: nome, Descricao: descricao, Unitario: precoUnitario)
+        public Livro(string nome, string descricao, decimal precoUnitario, string isbn, int totalDePaginas): base(Nome: nome, Descricao: descricao, Unitario: precoUnitario)
         {
             Isbn = isbn;
             TotalDePaginas = totalDePaginas;

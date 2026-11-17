@@ -17,9 +17,9 @@ namespace Comex.Menus
             try
             {
                 Produto produto = Scripts.PesquisarPorProdutoNoCadastro(nomeDoProduto);
-                float precoAntigo = produto.Unitario;
+                decimal precoAntigo = produto.Unitario;
                 Console.WriteLine("\nDigite o novo preço (em R$) para o produto:");
-                if (!float.TryParse(Console.ReadLine(), System.Globalization.NumberStyles.AllowDecimalPoint, System.Globalization.CultureInfo.CurrentCulture, out float novoPreco))
+                if (!decimal.TryParse(Console.ReadLine(), System.Globalization.NumberStyles.AllowDecimalPoint, System.Globalization.CultureInfo.CurrentCulture, out decimal novoPreco))
                 {
                     Console.WriteLine("Preço inválido.");
                     return;
