@@ -71,7 +71,7 @@ namespace Comex.Menus
             Console.WriteLine("4: Preço (maior para menor)");
             Console.WriteLine("Qualquer outra tecla: manter ordem original");
 
-            string opcao = Console.ReadLine();
+            string? opcao = EntradaConsole.ReadLine();
 
             return opcao switch
             {

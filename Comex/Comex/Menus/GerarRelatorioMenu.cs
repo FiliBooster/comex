@@ -16,14 +16,14 @@ namespace Comex.Menus
             Console.WriteLine("1: Cadastro de produtos");
             Console.WriteLine("2: Carrinho de um cliente");
 
-            switch (Console.ReadLine())
+            switch (EntradaConsole.ReadLine())
             {
                 case "1":
                     Executar(State.CadastroDeProdutos.Values);
                     break;
                 case "2":
                     Console.WriteLine("\nDigite o CPF do cliente cujo carrinho deseja exportar:");
-                    if (!int.TryParse(Console.ReadLine(), out int cpf))
+                    if (!CpfValidation.TryNormalize(EntradaConsole.ReadLine(), out string cpf))
                     {
                         Console.WriteLine("CPF inválido.");
                         return;
@@ -61,7 +61,7 @@ namespace Comex.Menus
 
             Console.WriteLine("\nDigite o caminho do arquivo CSV (ex.: C:\\Relatorios\\produtos.csv).");
             Console.WriteLine("Um nome sem pasta salva no diretório de execução. Arquivos existentes serão substituídos.");
-            string? caminhoArquivo = Console.ReadLine();
+            string? caminhoArquivo = EntradaConsole.ReadLine();
             if (string.IsNullOrWhiteSpace(caminhoArquivo))
             {
                 Console.WriteLine("Caminho do arquivo inválido.");

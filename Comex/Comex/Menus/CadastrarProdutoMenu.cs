@@ -13,17 +13,17 @@ namespace Comex.Menus
         public override void Executar()
         {
             Console.WriteLine("\nDigite o nome do produto:");
-            string nomeDoProduto = Console.ReadLine();
+            string nomeDoProduto = EntradaConsole.ReadLine();
 
             Console.WriteLine("\nDigite o preço (em R$) do produto:");
-            if (!decimal.TryParse(Console.ReadLine(), System.Globalization.NumberStyles.AllowDecimalPoint, System.Globalization.CultureInfo.CurrentCulture, out decimal precoDoProduto))
+            if (!decimal.TryParse(EntradaConsole.ReadLine(), System.Globalization.NumberStyles.AllowDecimalPoint, System.Globalization.CultureInfo.CurrentCulture, out decimal precoDoProduto))
             {
                 Console.WriteLine("Preço inválido.");
                 return;
             }
 
             Console.WriteLine("\nDigite a descrição do produto:");
-            string descricaoDoProduto = Console.ReadLine();
+            string descricaoDoProduto = EntradaConsole.ReadLine();
 
             Produto novoProduto = new Produto(nomeDoProduto, descricaoDoProduto, precoDoProduto);
 

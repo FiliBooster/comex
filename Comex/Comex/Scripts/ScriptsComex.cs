@@ -24,9 +24,9 @@ namespace Comex.Scripts
             Console.OutputEncoding = Encoding.UTF8;
             Console.InputEncoding = Encoding.UTF8;
         }
-        private Dictionary<int, string> CadastroDeClientes => _state.CadastroDeClientes;
+        private Dictionary<string, string> CadastroDeClientes => _state.CadastroDeClientes;
         private Dictionary<string, Produto> CadastroDeProdutos => _state.CadastroDeProdutos;
-        private Dictionary<int, Dictionary<string, Produto>> CarrinhosEmAberto => _state.CarrinhosEmAberto;
+        private Dictionary<string, Dictionary<string, Produto>> CarrinhosEmAberto => _state.CarrinhosEmAberto;
 
         public Produto PesquisarPorProdutoNoCadastro(string nomeDoProduto)
         {
@@ -43,17 +43,17 @@ namespace Comex.Scripts
             };
         }
 
-        public (int Cpf, bool TemCadastro) VerificarSeClienteJaTemCadastro()
+        public (string Cpf, bool TemCadastro) VerificarSeClienteJaTemCadastro()
         {
             Console.WriteLine("\nQual cliente está comprando (digite o CPF dele)?");
-            if (!int.TryParse(Console.ReadLine(), out int cpf))
+            if (!CpfValidation.TryNormalize(EntradaConsole.ReadLine(), out string cpf))
             {
                 Console.WriteLine("CPF inválido.");
-                return (cpf, false);
+                return (string.Empty, false);
             }
             if (CadastroDeClientes.ContainsKey(cpf) == false)
             {
-                Console.WriteLine($"Cliente não cadastrado.");
+                Console.WriteLine("Cliente não cadastrado.");
                 return (cpf, false);
             }
             return (cpf, true);
@@ -62,7 +62,7 @@ namespace Comex.Scripts
         {
             bool TemCadastro = false;
             Console.WriteLine("Qual produto deseja adicionar ao carrinho?");
-            string nomeDoProdutoDesejado = Console.ReadLine();
+            string nomeDoProdutoDesejado = EntradaConsole.ReadLine();
 
             if (CadastroDeProdutos.ContainsKey(key: nomeDoProdutoDesejado))
             {
@@ -116,9 +116,9 @@ namespace Comex.Scripts
 
             return null;
         }
-        public Dictionary<int, Dictionary<string,Produto>> ObterCarrinho(int cpfDoClienteCadastrado)
+        public Dictionary<string, Dictionary<string, Produto>> ObterCarrinho(string cpfDoClienteCadastrado)
         {
-            Dictionary<int, Dictionary<string, Produto>> carrinho = new();
+            Dictionary<string, Dictionary<string, Produto>> carrinho = new();
             if (CarrinhosEmAberto.TryGetValue(key: cpfDoClienteCadastrado, out var itensDeCarrinho)) {
                 carrinho[cpfDoClienteCadastrado] = itensDeCarrinho;
             }
@@ -128,16 +128,16 @@ namespace Comex.Scripts
             }
             return carrinho;
         }
-        public Dictionary<int, Dictionary<string, Produto>> CriarCarrinho(int cpfDoClienteCadastrado)
+        public Dictionary<string, Dictionary<string, Produto>> CriarCarrinho(string cpfDoClienteCadastrado)
         {
-            Dictionary<int, Dictionary<string, Produto>> carrinho = new() { [cpfDoClienteCadastrado] = new()};
+            Dictionary<string, Dictionary<string, Produto>> carrinho = new() { [cpfDoClienteCadastrado] = new()};
             RegistrarCarrinho(carrinho);
             return carrinho;
 
         }
-        public bool RegistrarCarrinho(Dictionary<int, Dictionary<string, Produto>> carrinho)
+        public bool RegistrarCarrinho(Dictionary<string, Dictionary<string, Produto>> carrinho)
         {
-            int cpf = carrinho.Keys.First();
+            string cpf = carrinho.Keys.First();
             CarrinhosEmAberto[cpf] = carrinho[cpf];
             return true;
         }

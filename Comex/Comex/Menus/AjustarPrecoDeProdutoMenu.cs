@@ -13,13 +13,13 @@ namespace Comex.Menus
         public override void Executar()
         {
             Console.WriteLine("\nQual o nome do produto cujo preço deseja ajustar?");
-            string nomeDoProduto = Console.ReadLine();
+            string nomeDoProduto = EntradaConsole.ReadLine();
             try
             {
                 Produto produto = Scripts.PesquisarPorProdutoNoCadastro(nomeDoProduto);
                 decimal precoAntigo = produto.Unitario;
                 Console.WriteLine("\nDigite o novo preço (em R$) para o produto:");
-                if (!decimal.TryParse(Console.ReadLine(), System.Globalization.NumberStyles.AllowDecimalPoint, System.Globalization.CultureInfo.CurrentCulture, out decimal novoPreco))
+                if (!decimal.TryParse(EntradaConsole.ReadLine(), System.Globalization.NumberStyles.AllowDecimalPoint, System.Globalization.CultureInfo.CurrentCulture, out decimal novoPreco))
                 {
                     Console.WriteLine("Preço inválido.");
                     return;

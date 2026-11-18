@@ -11,7 +11,7 @@ namespace Comex
     class Cliente(): IIdentificador
     {
         public required string Nome{ get; set; }
-        public required int CPF {get;set;}
+        public required string CPF {get;set;}
         public required string Email {get;set;}
         public required string Profissao {get;set;}
         public required int Telefone {get;set;}

@@ -14,10 +14,10 @@ namespace Comex.Menus
 
         public override void Executar()
         {
-            (int cpfDoCliente, bool clienteJaTemCadastro) = Scripts.VerificarSeClienteJaTemCadastro();
+            (string cpfDoCliente, bool clienteJaTemCadastro) = Scripts.VerificarSeClienteJaTemCadastro();
             if (clienteJaTemCadastro == false) { return; }
 
-            Dictionary<int, Dictionary<string, Produto>> carrinho = Scripts.ObterCarrinho(cpfDoCliente);
+            Dictionary<string, Dictionary<string, Produto>> carrinho = Scripts.ObterCarrinho(cpfDoCliente);
 
             bool adicaoConcluida = false;
             bool produtoTemCadastro = false;
@@ -27,12 +27,12 @@ namespace Comex.Menus
             {
                 (produtoTemCadastro, nomeDoProdutoDesejado) = Scripts.VerificarSeProdutoJaTemCadastro();
                 Console.WriteLine($"-- Digite '0' para sair.");
-                if (Console.ReadKey().Key is ConsoleKey.D0) { break; }
+                if (EntradaConsole.ReadKey().Key is ConsoleKey.D0) { break; }
 
                 if (produtoTemCadastro == false) { continue; }
 
                 Console.WriteLine($"\nQual a quantidade do produto {nomeDoProdutoDesejado} deseja adicionar ao carrinho?");
-                if (!int.TryParse(Console.ReadLine(), out quantidadeDesejadaDoProdutoDesejado))
+                if (!int.TryParse(EntradaConsole.ReadLine(), out quantidadeDesejadaDoProdutoDesejado))
                 {
                     Console.WriteLine("Quantidade inválida.");
                     continue;
@@ -47,7 +47,7 @@ namespace Comex.Menus
             }
 
         }
-        void AdicionarProdutoAoCarrinho(string nomeDoProduto, int quantidade, Dictionary<int, Dictionary<string, Produto>> carrinho)
+        void AdicionarProdutoAoCarrinho(string nomeDoProduto, int quantidade, Dictionary<string, Dictionary<string, Produto>> carrinho)
         {
             string nomeDoProdutoDesejado = nomeDoProduto;
             int quantidadeDesejadaDoProdutoDesejado = quantidade;

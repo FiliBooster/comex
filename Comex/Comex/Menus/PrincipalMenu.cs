@@ -21,10 +21,10 @@ namespace Comex.Menus
             while (_executando)
             {
                 ExibirMenuDeOpcoes();
-                if (!int.TryParse(Console.ReadLine(), out int opcaoEscolhida))
+                if (!int.TryParse(EntradaConsole.ReadLine(), out int opcaoEscolhida))
                 {
                     Console.WriteLine("\nOpção inválida. Pressione qualquer tecla para tentar novamente...");
-                    Console.ReadKey(intercept: true);
+                    EntradaConsole.ReadKey(intercept: true);
                     continue;
                 }
                 RotearOpcaoEscolhida(opcaoEscolhida);
@@ -33,7 +33,6 @@ namespace Comex.Menus
 
         private void ExibirMenuDeOpcoes()
         {
-            RolarParaFimDoHistorico();
             RenderizarTitulo();
             Console.WriteLine("\nDigite o número de uma das opções abaixo, para escolhê-la:");
             foreach (var item in _itens)
@@ -54,33 +53,14 @@ namespace Comex.Menus
 
             if (_itens.TryGetValue(opcaoEscolhida, out Menu menu))
             {
-                RolarParaFimDoHistorico();
                 menu.RenderizarTitulo();
                 menu.Executar();
                 Console.WriteLine("\nPressione qualquer tecla para voltar ao menu principal...");
-                Console.ReadKey(intercept: true);
+                EntradaConsole.ReadKey(intercept: true);
             }
             else
             {
                 Console.WriteLine("\nOpção inválida.");
-            }
-        }
-
-        private static void RolarParaFimDoHistorico()
-        {
-            // Em vez de limpar o histórico do console (Console.Clear()), apenas
-            // rola a janela visível para acompanhar o cursor atual, mantendo
-            // todo o histórico disponível para o usuário (sem inserir linhas novas).
-            try
-            {
-                int topoDesejado = Math.Max(0, Console.CursorTop - Console.WindowHeight + 1);
-                int topoMaximo = Math.Max(0, Console.BufferHeight - Console.WindowHeight);
-                Console.SetWindowPosition(0, Math.Min(topoDesejado, topoMaximo));
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                // Ignora caso o buffer do console não suporte o reposicionamento da janela
-                // (ex.: saída redirecionada para um arquivo).
             }
         }
 

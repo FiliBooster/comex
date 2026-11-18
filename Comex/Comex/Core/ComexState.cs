@@ -8,8 +8,8 @@ namespace Comex.Core
 {
     internal sealed class ComexState
     {
-        public Dictionary<int, string> CadastroDeClientes { get; } = new();
+        public Dictionary<string, string> CadastroDeClientes { get; } = new();
         public Dictionary<string, Produto> CadastroDeProdutos { get; } = new();
-        public Dictionary<int, Dictionary<string, Produto>> CarrinhosEmAberto { get; } = new();
+        public Dictionary<string, Dictionary<string, Produto>> CarrinhosEmAberto { get; } = new();
     }
 }

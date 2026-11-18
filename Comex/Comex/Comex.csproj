@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Comex.GeradorRelatorio\Comex.GeradorRelatorio.csproj" />
+    <InternalsVisibleTo Include="Comex.Tests" />
   </ItemGroup>
 
 </Project>

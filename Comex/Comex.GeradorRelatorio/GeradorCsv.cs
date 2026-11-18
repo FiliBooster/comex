@@ -16,10 +16,11 @@ namespace Comex.GeradorRelatorio
         /// <returns>Caminho completo do arquivo CSV gerado.</returns>
         public static string Exportar(IEnumerable<ProdutoRelatorioDto> produtos, string caminhoArquivo)
         {
-            IEnumerable<ProdutoCsv> produtosCsv = GerarProdutosCsv(produtos);
-            bool gerou = GerarCsv(produtosCsv, caminhoArquivo);
-            if (!gerou) { throw new FalhaAoGerarOuSalvarException(caminhoArquivo); }
+            ArgumentNullException.ThrowIfNull(produtos);
+            ArgumentException.ThrowIfNullOrWhiteSpace(caminhoArquivo);
 
+            IEnumerable<ProdutoCsv> produtosCsv = GerarProdutosCsv(produtos);
+            GerarCsv(produtosCsv, caminhoArquivo);
             return Path.GetFullPath(caminhoArquivo);
         }
 
@@ -30,6 +31,8 @@ namespace Comex.GeradorRelatorio
         /// <returns>Registros CSV correspondentes aos produtos fornecidos.</returns>
         public static IEnumerable<ProdutoCsv> GerarProdutosCsv (IEnumerable<ProdutoRelatorioDto> produtos)
         {
+            ArgumentNullException.ThrowIfNull(produtos);
+
             List<ProdutoCsv> produtosCsv = [];
             foreach (var tuplaProduto in produtos)
             {
@@ -46,12 +49,11 @@ namespace Comex.GeradorRelatorio
 
         }
 
-        private static bool GerarCsv(IEnumerable<ProdutoCsv> produtosCsv, string caminhoArquivo)
+        private static void GerarCsv(IEnumerable<ProdutoCsv> produtosCsv, string caminhoArquivo)
         {
             CsvHelper.CsvWriterOptions wOptions = new() { WriteByteOrderMark = true };
             using var writer = CsvWriter.ToFile(caminhoArquivo, wOptions);
             writer.WriteRecords(produtosCsv);
-            return true;
         }
     }
 

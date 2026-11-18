@@ -16,7 +16,7 @@ class Teste()
     Console.WriteLine(produto.Descricao);
     Console.WriteLine(produto.Unitario);
 
-    Console.ReadKey();
+    EntradaConsole.ReadKey();
 
     ComexState state = new();
     ScriptsComex scripts = new(state);

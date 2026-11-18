@@ -12,16 +12,16 @@ namespace Comex.Menus
 
         public override void Executar()
         {
-            Console.WriteLine("\nDigite apenas dígitos numéricos do CPF do cliente a ser cadastrado:");
+            Console.WriteLine("\nDigite o CPF do cliente a ser cadastrado (11 dígitos):");
 
-            if (!int.TryParse(Console.ReadLine(), out int numeroDeCpf))
+            if (!CpfValidation.TryNormalize(EntradaConsole.ReadLine(), out string numeroDeCpf))
             {
                 Console.WriteLine("CPF inválido.");
                 return;
             }
 
             Console.WriteLine("\nDigite o nome do cliente a ser cadastrado:");
-            string nomeDoCliente = Console.ReadLine();
+            string nomeDoCliente = EntradaConsole.ReadLine();
 
             State.CadastroDeClientes[numeroDeCpf] = nomeDoCliente;
             Console.WriteLine($"\nUsuário {nomeDoCliente} ({numeroDeCpf}) cadastrado com sucesso.");

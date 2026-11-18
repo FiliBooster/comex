@@ -1,5 +1,6 @@
 <Solution>
   <Project Path="Comex.GeradorRelatorio/Comex.GeradorRelatorio.csproj" Id="e751bbcd-9c52-472b-95dd-0eeaae31dea6" />
+  <Project Path="Comex.Tests/Comex.Tests.csproj" Id="811d317a-bdda-4f53-b524-14539202771d" />
   <Project Path="Comex/Comex.csproj" />
   <Project Path="Experimentation/Experimentation.csproj" Id="479ed751-8575-4197-9d48-c4fd1c02cf0b" />
   <Project Path="GeradorSmokeTest/GeradorSmokeTest.csproj" />
